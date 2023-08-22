@@ -18,7 +18,7 @@ def citationAnswerGenerator(business_jurisdiction):
     )
     system_template = """You are an assistant designed to provide answers to user's questions with a citation or reference. The question is related to business jurisdiction."""
     system_message_prompt = SystemMessagePromptTemplate.from_template(system_template)
-    human_template = """The jurisdiction is {business_jurisdiction}. Please provide an answer to the question with a citation or reference."""
+    human_template = """The user's question is about {business_jurisdiction}. Please provide an answer with a citation or reference."""
     human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
     chat_prompt = ChatPromptTemplate.from_messages(
         [system_message_prompt, human_message_prompt]
@@ -57,15 +57,13 @@ def display_unknown_response(unknown_response):
     else:
         st.markdown("The system is unable to generate a response at this time.")
 
-#Get the business type and jurisdiction from the user
 business_jurisdiction = st.text_input('Please enter your business type and jurisdiction')
 
-#Create a button to trigger the functionality of the app
 if st.button('Generate Answer'):
     if business_jurisdiction:
         answer = citationAnswerGenerator(business_jurisdiction)
         display_answer(answer)
-        unknown_response = unknownResponseGenerator()
-        display_unknown_response(unknown_response)
     else:
         st.markdown("Please enter your business type and jurisdiction to get an answer.")
+    unknown_response = unknownResponseGenerator()
+    display_unknown_response(unknown_response)
